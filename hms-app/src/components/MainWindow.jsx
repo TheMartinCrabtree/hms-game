@@ -15,7 +15,7 @@ const MainWindow = (props) => {
       <div>
         <button onClick={handleArmorGen}>Click Me</button>
       </div>
-      <ItemsWindow armor={armor} />
+      {armor && <ItemsWindow armor={armor} />}
     </div>
   );
 };
