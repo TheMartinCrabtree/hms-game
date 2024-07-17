@@ -1,43 +1,25 @@
 import Armor from "../../classes/armor";
+import Weapon from "../../classes/weapon";
+import {
+  rollD100,
+  rollD20,
+  rollD12,
+  rollD10,
+  rollD8,
+  rollD6,
+  rollD4,
+  rollD2,
+  getRandomInt,
+} from "./rng";
 
-function rollD100() {
-  return Math.floor(Math.random() * 100) + 1;
-}
-
-function rollD20() {
-  return Math.floor(Math.random() * 20) + 1;
-}
-
-function rollD12() {
-  return Math.floor(Math.random() * 12) + 1;
-}
-
-function rollD10() {
-  return Math.floor(Math.random() * 10) + 1;
-}
-
-function rollD8() {
-  return Math.floor(Math.random() * 8) + 1;
-}
-
-function rollD6() {
-  return Math.floor(Math.random() * 6) + 1;
-}
-
-function rollD4() {
-  return Math.floor(Math.random() * 4) + 1;
-}
-
-function rollD2() {
-  return Math.floor(Math.random() * 2);
-}
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
+function getFirstTwoCharacters(str) {
+  if (str.length < 2) {
+    return str;
+  }
+  return str.substring(0, 2);
 }
 
 const armorGen = () => {
-  // name = "naming error", weight = 0, armorClass = 0, durCurrent = 1, durMax = 1, bonuses = []
   let quality = "standard";
   let type = "light";
   const names = {
@@ -127,12 +109,16 @@ const armorGen = () => {
   };
 
   const name = getName();
+  const id = `Arm${getFirstTwoCharacters(name)}-${getRandomInt(
+    3000
+  ).toString()}`;
   const weight = properties[type].weight;
   const armorClass = properties[type].armorClass[quality];
   const durabilityCurrent = properties[type].durability[quality];
   const durabilityMax = properties[type].durability[quality];
   const bonuses = [];
   const newArmor = new Armor(
+    id,
     name,
     weight,
     armorClass,
@@ -141,9 +127,118 @@ const armorGen = () => {
     bonuses
   );
 
-  console.log("newArmor: ", newArmor);
-
   return newArmor;
 };
 
-export { armorGen };
+const weaponGen = () => {
+  let quality = "standard";
+  let type = "dagger";
+  const names = {
+    prefix: [
+      "Camille's",
+      "Martin's",
+      "Angela's",
+      "Daphne's",
+      "Amanda's",
+      "Katie's",
+      "Oni's",
+      "Silly's",
+      "Hari's",
+      "Katarina's",
+      "Aurora's",
+    ],
+    suffix: [
+      "Bite",
+      "Revenge",
+      "Averice",
+      "Poker",
+      "Bane",
+      "Blade",
+      "Edge",
+      "Saber",
+      "Harbinger",
+      "Justice",
+      "Torment",
+      "Steel",
+      "Sunderer",
+      "Redemption",
+    ],
+  };
+
+  switch (rollD20()) {
+    case 20:
+      quality = "superior";
+    case 1:
+    case 2:
+      quality = "poor";
+    default:
+      quality = "standard";
+  }
+
+  switch (rollD2()) {
+    case 0:
+      type = "dagger";
+    case 1:
+      type = "sword";
+    default:
+      type = "dagger";
+  }
+
+  const getName = () => {
+    return `${names.prefix[getRandomInt(names.prefix.length)]} ${
+      names.suffix[getRandomInt(names.suffix.length)]
+    }`;
+  };
+
+  const properties = {
+    dagger: {
+      weight: 10,
+      damageDice: {
+        poor: "d4",
+        standard: "d6",
+        superior: "d8",
+      },
+      durability: {
+        poor: 20,
+        standard: 30,
+        superior: 40,
+      },
+    },
+    sword: {
+      weight: 20,
+      damageDice: {
+        poor: "d6",
+        standard: "d8",
+        superior: "d10",
+      },
+      durability: {
+        poor: 20,
+        standard: 30,
+        superior: 40,
+      },
+    },
+  };
+
+  const name = getName();
+  const id = `Weap${getFirstTwoCharacters(name)}-${getRandomInt(
+    3000
+  ).toString()}`;
+  const weight = properties[type].weight;
+  const damageDice = properties[type].damageDice[quality];
+  const durabilityCurrent = properties[type].durability[quality];
+  const durabilityMax = properties[type].durability[quality];
+  const bonuses = [];
+  const newWeapon = new Weapon(
+    id,
+    name,
+    weight,
+    damageDice,
+    durabilityCurrent,
+    durabilityMax,
+    bonuses
+  );
+
+  return newWeapon;
+};
+
+export { armorGen, weaponGen };

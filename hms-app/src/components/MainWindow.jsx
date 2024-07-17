@@ -4,6 +4,9 @@ import ItemsWindow from "./ItemsWindow";
 
 const MainWindow = (props) => {
   const [armor, setArmor] = useState(undefined);
+  const [weapon, setWeapon] = useState(undefined);
+  const [gold, setGold] = useState(0);
+  const [inventory, setInventory] = useState([]);
   console.log("current armor value: ", armor);
   const handleArmorGen = () => {
     const newArmor = armorGen();

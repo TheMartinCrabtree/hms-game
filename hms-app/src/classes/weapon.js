@@ -1,9 +1,9 @@
-class Armor {
+class Weapon {
   constructor(
-    id = "A001",
+    id = "W001",
     name = "default name",
     weight = 0,
-    armorClass = 0,
+    damageDice = "d6",
     durCurrent = 1,
     durMax = 1,
     bonuses = []
@@ -11,14 +11,11 @@ class Armor {
     this.id = id;
     this.name = name;
     this.weight = weight;
-    this.armorClass = armorClass;
+    this.damageDice = damageDice;
     this.durCurrent = durCurrent;
     this.durMax = durMax;
     this.bonuses = bonuses;
   }
-
-  // Local Methods
-  // static displayName = "Point";
 
   // Methods
   takeDamage(damage) {
@@ -30,4 +27,4 @@ class Armor {
   }
 }
 
-export default Armor;
+export default Weapon;
