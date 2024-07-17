@@ -1,5 +1,6 @@
 import Armor from "../../classes/armor";
 import Weapon from "../../classes/weapon";
+import Accessory from "../../classes/accessory";
 import {
   rollD100,
   rollD20,
@@ -18,6 +19,12 @@ function getFirstTwoCharacters(str) {
   }
   return str.substring(0, 2);
 }
+
+const getBonuses = () => {
+  let bonusArr = [];
+
+  return bonusArr;
+};
 
 const armorGen = () => {
   let quality = "standard";
@@ -57,9 +64,11 @@ const armorGen = () => {
   switch (rollD20()) {
     case 20:
       quality = "superior";
+      break;
     case 1:
     case 2:
       quality = "poor";
+      break;
     default:
       quality = "standard";
   }
@@ -67,8 +76,10 @@ const armorGen = () => {
   switch (rollD2()) {
     case 0:
       type = "light";
+      break;
     case 1:
       type = "heavy";
+      break;
     default:
       type = "light";
   }
@@ -168,9 +179,11 @@ const weaponGen = () => {
   switch (rollD20()) {
     case 20:
       quality = "superior";
+      break;
     case 1:
     case 2:
       quality = "poor";
+      break;
     default:
       quality = "standard";
   }
@@ -178,8 +191,10 @@ const weaponGen = () => {
   switch (rollD2()) {
     case 0:
       type = "dagger";
+      break;
     case 1:
       type = "sword";
+      break;
     default:
       type = "dagger";
   }
@@ -241,4 +256,52 @@ const weaponGen = () => {
   return newWeapon;
 };
 
-export { armorGen, weaponGen };
+const accessoryGen = () => {
+  const names = {
+    prefix: [
+      "Camille's",
+      "Martin's",
+      "Angela's",
+      "Daphne's",
+      "Amanda's",
+      "Katie's",
+      "Oni's",
+      "Silly's",
+      "Hari's",
+      "Katarina's",
+      "Aurora's",
+    ],
+    suffix: [
+      "Amulet",
+      "Ankh",
+      "Sigil",
+      "Talisman",
+      "Necklace",
+      "Charm",
+      "Seal",
+      "Mark",
+      "Totem",
+      "Blessing",
+      "Curse",
+      "Protector",
+      "Weave",
+      "Guardian",
+    ],
+  };
+  const getName = () => {
+    return `${names.prefix[getRandomInt(names.prefix.length)]} ${
+      names.suffix[getRandomInt(names.suffix.length)]
+    }`;
+  };
+
+  const name = getName();
+  const id = `Acc${getFirstTwoCharacters(name)}-${getRandomInt(
+    3000
+  ).toString()}`;
+  const bonuses = [];
+  const newAccessory = new Accessory(id, name, bonuses);
+
+  return newAccessory;
+};
+
+export { armorGen, weaponGen, accessoryGen };
