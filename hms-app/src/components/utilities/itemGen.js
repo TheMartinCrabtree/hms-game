@@ -257,6 +257,8 @@ const weaponGen = () => {
 };
 
 const accessoryGen = () => {
+  let quality = "standard";
+  let bonusArr = [];
   const names = {
     prefix: [
       "Camille's",
@@ -293,6 +295,17 @@ const accessoryGen = () => {
       names.suffix[getRandomInt(names.suffix.length)]
     }`;
   };
+  switch (rollD20()) {
+    case 20:
+      quality = "superior";
+      break;
+    case 1:
+    case 2:
+      quality = "poor";
+      break;
+    default:
+      quality = "standard";
+  }
 
   const name = getName();
   const id = `Acc${getFirstTwoCharacters(name)}-${getRandomInt(

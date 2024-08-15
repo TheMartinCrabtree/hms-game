@@ -20,7 +20,7 @@ const MainWindow = (props) => {
   };
   const _handleAccessoryGen = () => {
     const newAccessory = accessoryGen();
-    return setWeapon(newAccessory);
+    return setAccessory(newAccessory);
   };
   return (
     <div>
@@ -30,7 +30,7 @@ const MainWindow = (props) => {
       <div>
         <button onClick={_handleArmorGen}>random armor</button>
         <button onClick={_handleWeaponGen}>random weapon</button>
-        <button onClick={_handleWeaponGen}>random weapon</button>
+        <button onClick={_handleAccessoryGen}>random accessory</button>
       </div>
       {(armor || weapon || accessory) && (
         <ItemsWindow armor={armor} weapon={weapon} accessory={accessory} />
