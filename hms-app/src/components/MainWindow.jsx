@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { armorGen, weaponGen, accessoryGen } from "./utilities/itemGen";
 import ItemsWindow from "./ItemsWindow";
+import MapGrid from "./MapGrid";
 
 const MainWindow = (props) => {
   const [armor, setArmor] = useState(undefined);
@@ -35,6 +36,7 @@ const MainWindow = (props) => {
       {(armor || weapon || accessory) && (
         <ItemsWindow armor={armor} weapon={weapon} accessory={accessory} />
       )}
+      <MapGrid />
     </div>
   );
 };
