@@ -9,8 +9,6 @@ const MainWindow = (props) => {
   const [accessory, setAccessory] = useState(undefined);
   const [gold, setGold] = useState(0);
   const [inventory, setInventory] = useState([]);
-  console.log("current armor value: ", armor);
-  console.log("current weapon value: ", weapon);
   const _handleArmorGen = () => {
     const newArmor = armorGen();
     return setArmor(newArmor);
