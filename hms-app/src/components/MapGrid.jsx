@@ -28,11 +28,20 @@ const _createRoomData = (data) => {
 function createMap() {
   // Initialize a 6x6 array
   const grid = Array.from({ length: 6 }, () =>
-    Array(6).fill({ id: `room-${getRandomInt(3000).toString()}`, type: "WALL" })
+    Array(6).fill({
+      id: "default-room-id",
+      type: "WALL",
+      isOpen: false,
+    })
   );
 
-  // Start the path at [0][0] with START object
-  grid[0][0] = { id: grid[0][0].id, type: "START" };
+  // Start the path at [0][0] with START
+  grid[0][0] = {
+    ...grid[0][0],
+    type: "START",
+    isOpen: true,
+    id: `room-${getRandomInt(3000).toString()}`,
+  };
 
   let row = 0;
   let col = 0;
@@ -41,11 +50,9 @@ function createMap() {
   while (row !== 5 || col !== 5) {
     const possibleMoves = [];
 
-    // Check if we can move right
     if (col < 5) {
       possibleMoves.push("right");
     }
-    // Check if we can move down
     if (row < 5) {
       possibleMoves.push("down");
     }
@@ -54,15 +61,22 @@ function createMap() {
     const move =
       possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
 
-    // Make the move
     if (move === "right") {
       col++;
     } else if (move === "down") {
       row++;
     }
-    grid[row][col] = { id: grid[row][col].id, type: "ROOM" };
+    grid[row][col] = {
+      ...grid[row][col],
+      type: "ROOM",
+      id: `room-${getRandomInt(3000).toString()}`,
+    };
   }
-  grid[5][5] = { id: grid[row][col].id, type: "ROOM" };
+  grid[5][5] = {
+    ...grid[5][5],
+    type: "ROOM",
+    id: `room-${getRandomInt(3000).toString()}`,
+  };
 
   return grid;
 }
@@ -73,6 +87,39 @@ const MapGrid = () => {
     const newMap = createMap;
     setMapData(newMap);
   }, []);
+  console.log("mapData", mapData);
+
+  const _renderRoom = (roomData) => {
+    const { id, type, isOpen } = roomData;
+    const clickable = type !== "WALL";
+
+    return clickable ? (
+      <td
+        key={id}
+        style={{
+          border: "1px solid black",
+          padding: "10px",
+          textAlign: "center",
+          backgroundColor: `${isOpen ? "white" : "grey"}`,
+        }}
+        onClick={() => console.log("clicked")}
+      >
+        {type}
+      </td>
+    ) : (
+      <td
+        key={`room-${getRandomInt(3000).toString()}`}
+        style={{
+          border: "1px solid black",
+          padding: "10px",
+          textAlign: "center",
+          backgroundColor: "black",
+        }}
+      >
+        {type}
+      </td>
+    );
+  };
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -80,18 +127,7 @@ const MapGrid = () => {
         {mapData &&
           mapData.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <td
-                  key={cellIndex}
-                  style={{
-                    border: "1px solid black",
-                    padding: "10px",
-                    textAlign: "center",
-                  }}
-                >
-                  {cell.type}
-                </td>
-              ))}
+              {row.map((roomData) => _renderRoom(roomData))}
             </tr>
           ))}
       </tbody>
