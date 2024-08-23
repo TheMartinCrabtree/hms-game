@@ -41,6 +41,8 @@ function createMap() {
     type: "START",
     isOpen: true,
     id: `room-${getRandomInt(3000).toString()}`,
+    row: 0,
+    col: 0,
   };
 
   let row = 0;
@@ -70,12 +72,16 @@ function createMap() {
       ...grid[row][col],
       type: "ROOM",
       id: `room-${getRandomInt(3000).toString()}`,
+      row: row,
+      col: col,
     };
   }
   grid[5][5] = {
     ...grid[5][5],
     type: "ROOM",
     id: `room-${getRandomInt(3000).toString()}`,
+    row: 5,
+    col: 5,
   };
 
   return grid;
@@ -89,8 +95,17 @@ const MapGrid = () => {
   }, []);
   console.log("mapData", mapData);
 
+  const _handleOnClick = (row, col) => {
+    console.log("row", row);
+    // do nothing if already open
+    if (mapData[row][col].isOpen) return;
+    const newMapData = mapData.map((row) => row.slice());
+    newMapData[row][col] = { ...newMapData[row][col], isOpen: true };
+    setMapData(newMapData);
+  };
+
   const _renderRoom = (roomData) => {
-    const { id, type, isOpen } = roomData;
+    const { id, type, isOpen, row, col } = roomData;
     const clickable = type !== "WALL";
 
     return clickable ? (
@@ -102,7 +117,7 @@ const MapGrid = () => {
           textAlign: "center",
           backgroundColor: `${isOpen ? "white" : "grey"}`,
         }}
-        onClick={() => console.log("clicked")}
+        onClick={(row, col) => _handleOnClick}
       >
         {type}
       </td>
